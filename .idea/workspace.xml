@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a0863605-e437-4456-bbc7-573e56295bab" name="Default" comment="Dodanie klas: Processor, Database, TransferData&#10;&#10;Klasa database chyba kompletna. &#10;Processor inicjalizuje database i zapisuje w niej dane.&#10;TransferData jest kontenerem do przekazywania danych produktor z DB do processora.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Database.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/Processor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/TransferData.java" />
+    <list default="true" id="a0863605-e437-4456-bbc7-573e56295bab" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
     </list>
     <ignored path="PointOfSale.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -479,7 +475,14 @@
       <option name="project" value="LOCAL" />
       <updated>1458501727285</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Dodanie klas: Processor, Database, TransferData&#10;&#10;Klasa database chyba kompletna. &#10;Processor inicjalizuje database i zapisuje w niej dane.&#10;TransferData jest kontenerem do przekazywania danych produktor z DB do processora.">
+      <created>1458515003592</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1458515003592</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
