@@ -3,4 +3,5 @@
  */
 public class Main {
     private int test;
+    private int test2;
 }
