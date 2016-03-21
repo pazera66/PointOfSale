@@ -1,11 +1,15 @@
 import java.math.BigDecimal;
 
-/**
- * Created by pazer on 20.03.2016.
- */
+
 public class TransferData {
     private String productName;
     private BigDecimal productPrice;
+
+    //TODO singleton????
+
+    public TransferData(){
+
+    }
 
     public String getProductName() {
         return productName;

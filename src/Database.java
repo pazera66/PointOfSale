@@ -1,18 +1,15 @@
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by pazer on 20.03.2016.
- */
+
 public class Database {
 
     private static Database instance = null;
 
 
-    //TODO czy da sie zrobic liste czy cos zeby float byl prymitywem a nie obiektem
-    private Map<Integer, String> productNameList;
-    private Map<String, BigDecimal> productPriceList;
+    private Map<Integer, String> productNameList = new HashMap<>();
+    private Map<String, BigDecimal> productPriceList = new HashMap<>();
 
     protected Database(){
     }
@@ -37,8 +34,10 @@ public class Database {
     }
 
     private boolean checkIfItemAlreadyExistsInDB(String name) {
-        if(productNameList.get(name)!=null){
-            return true;
+        if(productNameList!=null){
+            if(productNameList.get(name)!=null){
+                return true;
+            }
         }
         return false;
     }
