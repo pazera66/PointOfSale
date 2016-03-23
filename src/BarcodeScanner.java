@@ -1,13 +1,15 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
- class BarcodeScanner {
+public class BarcodeScanner {
 
-    private int[] exampleBarcodeList =  {1,4,3,2,-1};
+    public String scanBarcode() throws IOException {
 
-     BarcodeScanner(){
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("\nEnter barcode\n");
 
+        return br.readLine();
     }
 
-     int scanBarcode(int exampleNumberOfBarcodeToBeScanned){
-        return exampleBarcodeList[exampleNumberOfBarcodeToBeScanned];
-    }
 }

@@ -1,86 +1,92 @@
-import java.math.BigDecimal;
+import DAO.ProductDAOImpl;
+import device.LCDDisplay;
+import device.Printer;
+import entity.Product;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SaleProcessor {
 
-    private Database database;
-    private BarcodeScanner barcodeScanner;
+
     private Receipt receipt;
-    private LCDdisplay lcdDisplay = new LCDdisplay();
-    private TransferData productData = new TransferData();
+    private BarcodeScanner barcodeScanner;
+    private Product decodedProduct;
+    private String barcode;
+    private LCDDisplay lcdDisplay;
+    private Printer printer;
 
-    private String[] sampleItemNameList = {"Mleko", "Chleb", "Jajka", "Sok", "Maslo"};
-    private BigDecimal[] sampleItemPriceList = {new BigDecimal("2.39"), new BigDecimal("4.85"), new BigDecimal("10.11"),
-            new BigDecimal("6.50"), new BigDecimal("4.99")};
+    ProductDAOImpl productDAO = new ProductDAOImpl();
 
+    public SaleProcessor() throws IOException {
 
-    public SaleProcessor(){
-        createSampleDatabase();
-        createMockBarcodeScanner();
-        createReceipt();
+        initializeComponents();
 
-        //Proof of concept
-        processProduct(0, 1);
-        processProduct(1, 8);
-        processProduct(2, 10);
-        processProduct(3, 2);
-        processProduct(4, 1);
+        do {
+            barcode = barcodeScanner.scanBarcode();
+            if(!checkIfProperBarcode(barcode)) {
+                continue;
+            }
 
-        getExitInput();
-        showReceiptOnLCD(receipt);
+            decodedProduct = decodeBarcode(barcode);
+
+            if(decodedProduct!=null){
+                receipt.addItemToReceipt(decodedProduct);
+                printProductInfoOnLCD(decodedProduct);
+            } else {
+                if (decodedProduct==null&&!barcode.equals("exit")) {
+                    printErrorProductNotInDatabase();
+                }
+            }
+
+        } while (!barcode.equals("exit"));
+
         printReceipt();
 
 
     }
 
-    private void getExitInput() {
-        //TODO
-    }
-
-    private void showReceiptOnLCD(Receipt receipt) {
-        lcdDisplay.displayData(receipt);
-    }
-
-    private void printReceipt() {
-        new Printer(receipt);
-
-    }
-
-    private void processProduct(int scannedProductNumber, int quantity) {
-        int barcode = requestBarcode(scannedProductNumber);
-        if(barcode<0){
-            showWrongBarcode();
-            return;
-        }
-
-        productData = database.decodeBarcode(barcode);
-
-
-        if(!checkIfProductExistsInDB(productData)){
-            showProductNotInDB();
-            return;
-        }
-
-        receipt.addItemToReceipt(productData.getProductName(), quantity, productData.getProductPrice());
-
-    }
-
-    private boolean checkIfProductExistsInDB(TransferData productData) {
-        if(productData.getProductName().equals("Product not found")){
+    private boolean checkIfProperBarcode(String barcode) {
+        if(barcode.equals("")){
+            lcdDisplay.print("\nInvalid bar-code\n");
             return false;
         }
-
         return true;
     }
 
-    private void showProductNotInDB() {
-        //TODO
-        lcdDisplay.displayData("Product not found");
+    private void initializeComponents(){
+        createMockBarcodeScanner();
+        createReceipt();
+        barcode = "";
+        lcdDisplay = new LCDDisplay();
+        printer = new Printer();
     }
 
-    private void showWrongBarcode() {
-        //TODO
-        lcdDisplay.displayData("Invalid bar-code");
+    private void printProductInfoOnLCD(Product decodedProduct) {
+        List<Product> productAsList = new ArrayList<>();
+        productAsList.add(decodedProduct);
+        lcdDisplay.print(productAsList);
+    }
+
+    private void printErrorProductNotInDatabase() {
+        lcdDisplay.print("\nProduct not found\n");
+    }
+
+    private void printReceipt() {
+        receipt.calculateTotalSum();
+        lcdDisplay.print("\n\nTotal sum: " + receipt.getTotalSum().toString() + "zl\n\n");
+        printer.print("\n\nBelow is receipt printed on printer\n\n");
+        printer.print(receipt.getProductsList());
+        printer.print("\n\nTotal sum: " + receipt.getTotalSum().toString() + "zl\n\n");
+    }
+
+    private Product decodeBarcode(String barcode) {
+        if(productDAO.findByBarcode(barcode)==null){
+            return null;
+        }
+
+        return productDAO.findByBarcode(barcode);
     }
 
     private void createMockBarcodeScanner() {
@@ -90,21 +96,5 @@ public class SaleProcessor {
     private void createReceipt() {
         receipt = new Receipt();
     }
-
-    private int requestBarcode(int exampleBarcodeNumberToBeScanned) {
-        return barcodeScanner.scanBarcode(exampleBarcodeNumberToBeScanned);
-    }
-
-
-    private void createSampleDatabase() {
-        database = new Database();
-        for(int i = 0; i < sampleItemNameList.length; i++){
-            database.addItemToDatabase(i, sampleItemNameList[i], sampleItemPriceList[i]);
-        }
-
-
-
-    }
-
 
 }

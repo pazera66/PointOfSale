@@ -1,3 +1,5 @@
+import entity.Product;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,22 +8,25 @@ import java.util.List;
 public class Receipt {
 
     private BigDecimal totalSum = new BigDecimal("0");
-    private List<String> productNameList= new ArrayList<>();
-    private List<Integer> productQuantityList= new ArrayList<>();
-    private List<BigDecimal> productUnitPriceList= new ArrayList<>();
-    private List<BigDecimal> productSubtotal= new ArrayList<>();
+    private List<Product> productsList = new ArrayList<>();
 
-    public Receipt(){
-
+    public void addItemToReceipt(Product product){
+        productsList.add(product);
     }
 
-    public void addItemToReceipt(String productName, int quantity, BigDecimal productUnitPrice){
-        productNameList.add(productName);
-        productQuantityList.add(quantity);
-        productUnitPriceList.add(productUnitPrice);
-        productSubtotal.add(productUnitPrice.multiply(BigDecimal.valueOf(quantity)));
-        totalSum = totalSum.add(productUnitPrice.multiply(BigDecimal.valueOf(quantity)));
+    public BigDecimal calculateTotalSum(){
+        for (Product product : productsList){
+            totalSum = totalSum.add(product.getProductPrice());
+        }
+        return totalSum;
+    }
 
+    public List<Product> getProductsList(){
+        return productsList;
+    }
+
+    public BigDecimal getTotalSum(){
+        return totalSum;
     }
 
 }

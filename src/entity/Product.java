@@ -1,14 +1,26 @@
+package entity;
+
 import java.math.BigDecimal;
 
+public class Product {
 
-public class TransferData {
+    private String barcode;
     private String productName;
     private BigDecimal productPrice;
 
-    //TODO singleton????
+    public Product(String barcode, String productName, BigDecimal productPrice){
+        this.barcode = barcode;
+        this.productName=productName;
+        this.productPrice = productPrice;
+    }
 
-    public TransferData(){
 
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
     }
 
     public String getProductName() {
