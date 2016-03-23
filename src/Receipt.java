@@ -5,27 +5,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Receipt {
+class Receipt {
 
     private BigDecimal totalSum = new BigDecimal("0");
     private List<Product> productsList = new ArrayList<>();
 
-    public void addItemToReceipt(Product product){
+     void addItemToReceipt(Product product){
         productsList.add(product);
     }
 
-    public BigDecimal calculateTotalSum(){
+     BigDecimal calculateTotalSum(){
         for (Product product : productsList){
             totalSum = totalSum.add(product.getProductPrice());
         }
         return totalSum;
     }
 
-    public List<Product> getProductsList(){
+    List<Product> getProductsList(){
         return productsList;
     }
 
-    public BigDecimal getTotalSum(){
+    BigDecimal getTotalSum(){
         return totalSum;
     }
 

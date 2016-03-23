@@ -1,5 +1,7 @@
+import DAO.ProductDAO;
 import DAO.ProductDAOImpl;
 import device.LCDDisplay;
+import device.OutputDevice;
 import device.Printer;
 import entity.Product;
 import java.io.IOException;
@@ -7,19 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SaleProcessor {
+ class SaleProcessor {
 
+    private static final String EXIT = "exit";
 
     private Receipt receipt;
     private BarcodeScanner barcodeScanner;
     private Product decodedProduct;
     private String barcode;
-    private LCDDisplay lcdDisplay;
-    private Printer printer;
+    private OutputDevice lcdDisplay;
+    private OutputDevice printer;
 
-    ProductDAOImpl productDAO = new ProductDAOImpl();
+    private ProductDAO productDAO = new ProductDAOImpl();
 
-    public SaleProcessor() throws IOException {
+    SaleProcessor() throws IOException {
 
         initializeComponents();
 
@@ -31,16 +34,14 @@ public class SaleProcessor {
 
             decodedProduct = decodeBarcode(barcode);
 
-            if(decodedProduct!=null){
+            if (decodedProduct != null) {
                 receipt.addItemToReceipt(decodedProduct);
                 printProductInfoOnLCD(decodedProduct);
-            } else {
-                if (decodedProduct==null&&!barcode.equals("exit")) {
-                    printErrorProductNotInDatabase();
-                }
+            } else if (!EXIT.equals(barcode)) {
+                printErrorProductNotInDatabase();
             }
 
-        } while (!barcode.equals("exit"));
+        } while (!EXIT.equals(barcode));
 
         printReceipt();
 
@@ -48,7 +49,7 @@ public class SaleProcessor {
     }
 
     private boolean checkIfProperBarcode(String barcode) {
-        if(barcode.equals("")){
+        if(barcode.isEmpty()){
             lcdDisplay.print("\nInvalid bar-code\n");
             return false;
         }

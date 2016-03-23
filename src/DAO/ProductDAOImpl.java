@@ -1,6 +1,7 @@
 package DAO;
 
 import entity.Product;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,6 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-
     public Product findByBarcode(String barcode) {
         return productMap.get(barcode);
     }
